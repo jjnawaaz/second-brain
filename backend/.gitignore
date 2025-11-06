@@ -1,0 +1,10 @@
+# node modules and Typescript
+
+node_modules
+.env
+dist
+
+# Prisma
+src/prisma/generated
+
+
