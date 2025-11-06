@@ -7,29 +7,40 @@ type Response {
     users: [Users]
 }
 
+type GetUser {
+    message: String
+    success: Boolean
+    user: Users
+}
+type GetUsers {
+    message: String
+    success: Boolean
+    user: [Users]
+}
+
 type Users {
     name: String,
-    username: String,
-    password: String
+    username: String
 }
 
 input UserSignUp {
-    name: String!,
-    username: String!,
+    name: String!
+    username: String!
     password: String!
 }
 
 input UserSignIn {
-    username: String!,
+    username: String!
     password: String!
 }
 
 type Query {
-    getAllUsers: Response
+    getAllUsers: GetUsers
+    getUser(id: String!): GetUser
 }
 
 type Mutation {
-    SignUpUser(data: UserSignUp!): Response,
+    SignUpUser(data: UserSignUp!): Response
     SignInUser(data: UserSignIn!): Response
 }
 
