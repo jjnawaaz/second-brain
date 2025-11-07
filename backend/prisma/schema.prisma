@@ -11,8 +11,15 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+  url      = env("NEON_DB")
+}
+
+
+enum Link {
+  DOCUMENT
+  TWEET
+  YOUTUBE
+  LINKEDIN
 }
 
 model User {
@@ -20,6 +27,19 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   name String
-  username String @unique
+  email String @unique
   password String 
+  sharableLink String?
+  contents Content[]
+}
+
+model Content {
+  id Int @id @default (autoincrement())
+  type Link
+  title String
+  link String 
+  description String 
+  tags String[] 
+  userId Int
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

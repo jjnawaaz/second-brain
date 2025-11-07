@@ -1,47 +1,115 @@
 export const userDefs = `#graphql
 
-type Response {
+enum ContentType {
+    DOCUMENT
+    TWEET
+    YOUTUBE
+    LINKEDIN
+}
+
+
+type User {
+    id: ID!
+    name: String!
+    email: String!
+    sharableLink: String
+}
+
+
+input SignUpInput {
+    name: String!
+    email: String!
+    password: String!
+}
+
+input SignInInput {
+    email: String!
+    password: String!
+}
+
+type SignInResponse{
     message: String!
     success: Boolean!
-    user: Users
-    users: [Users]
+    token: String 
+    user: User    #change this later
 }
 
-type GetUser {
-    message: String
+type UserResponse {
+    message: String!
+    success: Boolean!
+    user: User
+}
+
+type UsersResponse {
+    message: String!
     success: Boolean
-    user: Users
-}
-type GetUsers {
-    message: String
-    success: Boolean
-    user: [Users]
+    users: [User!]!
 }
 
-type Users {
-    name: String,
-    username: String
+
+type ContentPayload {
+    id: ID!
+    title: String!
+    description: String!
+    link: String!
+    type: String!
+    tags: [String!]
+    userId: ID!
+    createdAt: String
+    updatedAt: String
 }
 
-input UserSignUp {
-    name: String!
-    username: String!
-    password: String!
+type ContentsResponse {
+    message: String!
+    success: Boolean!
+    contents: [ContentPayload!]
 }
 
-input UserSignIn {
-    username: String!
-    password: String!
+type DeleteContentResponse {
+    message: String!
+    success: Boolean!
 }
+
+type CreateSharableLinkResponse {
+    link: String!
+    success: Boolean!
+    message: String!
+}
+
+input CreateContentInput {
+    title: String!
+    description: String!
+    link: String!
+    type: ContentType = LINKEDIN
+    tags: [String!]
+}
+
+input UpdateContentInput {
+    title: String
+    description: String
+    link: String
+    type: ContentType
+    tags: [String!]
+}
+
+
+
+#Queries and Mutations 
 
 type Query {
-    getAllUsers: GetUsers
-    getUser(id: String!): GetUser
+    getContents: ContentsResponse
+    getUser: UserResponse
+    getAllUsers: UsersResponse
+    getContentById(id: ID!): ContentPayload
 }
 
 type Mutation {
-    SignUpUser(data: UserSignUp!): Response
-    SignInUser(data: UserSignIn!): Response
+    signupUser(data: SignUpInput!) : SignInResponse
+    signinUser(data:SignInInput!) : SignInResponse
+    createContent(data: CreateContentInput!): ContentPayload
+    updateContent(data: UpdateContentInput!): ContentPayload
+    deleteContent(id: ID!): DeleteContentResponse
+    createSharableLink: CreateSharableLinkResponse
 }
 
 `
