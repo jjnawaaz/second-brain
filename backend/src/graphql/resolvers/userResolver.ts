@@ -5,11 +5,12 @@ import 'dotenv/config'
 import type { Response } from "express"
 import { CookieOptions } from "../../utils/utils.js"
 import type { Link } from "../../prisma/generated/client/index.js"
+import { nanoid } from "nanoid"
 export const userResolvers = {
     Query: {
         getUser: async(_:any, args:{id: string})=>{
-            try{
-                const {id} = args
+        try{
+            const {id} = args
             if(!id) throw new Error("Authentication Error")
             const user = await prisma.user.findUnique({
                 where: {
@@ -28,24 +29,114 @@ export const userResolvers = {
             } catch(e:any) {
                 throw new Error(e)
             }
+        },
+        getContents: async(_:any,__:any,{payload}:{payload: any})=>{
+            if(!payload) return {
+                message:"Authorization Error",
+                success: false
+            }
+            try{
+                const contents = await prisma.content.findMany({
+                where: {
+                    userId: Number(payload.userId)
+                }
+            })
+            return {
+                message: "Contents fetched",
+                success: true,
+                contents
+            }  
+            } catch(e){
+                console.error(e)
+                throw new Error("DB Error")
+            } 
+        },
+        getAllUsers: async(_:any,__:any,{payload}:{payload: any})=>{
+            if(!payload) return {
+                message: "Invalid User",
+                success: false
+            }
+            const users = await prisma.user.findMany({
+                select:{
+                    id: true,
+                    name: true,
+                    email: true,
+                    sharableLink: false,
+                    password: false
+                }
+            })
+            return {
+                message: "fetched all users",
+                success: true,
+                users
+            }
+        },
+        getContentsByLink: async(_:any,args: {link: string},{payload}: {payload:any})=>{
+            if(!payload) return {
+                message:"Unauthorized user",
+                success: false
+            }
+            const link = args.link
+           try{
+            // find that user using link
+             const user = await prisma.user.findUnique({
+                where: {
+                    sharableLink: link
+                }
+            })
+            const contents = await prisma.content.findMany({
+                where:{
+                    userId: Number(user?.id)
+                }
+            })
+            return {
+                message: "Successfully fetched data",
+                success: true,
+                contents     
+            }
+           }catch(e){
+            console.error(e)
+            throw new Error("DB Error")
+           }
+        },
+        getSharableLink: async(_:any,__:any,{payload}:{payload : any}) => {
+            if(!payload) return {
+                message: "Unauthorized User",
+                success: false
+            }
+            try{
+                const user = await prisma.user.findUnique({
+                where: {
+                    id: Number(payload.userId)
+                }
+            })
+            return {
+                message: "Successfully fetched link",
+                success: true,
+                link: user?.sharableLink 
+            }
+            }catch(e){
+                console.error(e)
+                throw new Error("DB Error")
+            }
         }
     },
     Mutation: {
-        signupUser: async(_:any,args: {data: {name: string, email: string, password: string, sharableLink: string}},{res}:{res: Response}) => {
-            const {email, name, password, sharableLink} = args.data
-            
+        signupUser: async(_:any,args: {data: {name: string, email: string, password: string}},{res}:{res: Response}) => {
+            const {email, name, password} = args.data
+            const link = nanoid()
             try{
                 const user = await prisma.user.create({
                 data: {
                     name: name,
                     email: email,
                     password: password,
-                    sharableLink: sharableLink ? sharableLink : ''
+                    sharableLink: link
                 }
             })
             if(user){
                 const token = jwt.sign({userId: user.id},process.env.JWT_SECRET as string,{expiresIn: '1d'})
-            res.cookie(process.env.COOKIE_NAME as string,token,CookieOptions)
+                res.cookie(process.env.COOKIE_NAME as string,token,CookieOptions)
             return {
                 success: true,
                 message: "User signed up successfully",
@@ -53,10 +144,10 @@ export const userResolvers = {
             }
             } 
             }catch(e:any){
-                
+                console.error(e)
                 if(e.code === 'P2002') {
                  return {
-                    message: "User already exists",
+                    message: "DB Error",
                     success: false
                 }
                 }
@@ -218,6 +309,6 @@ export const userResolvers = {
                 console.error(e)
                 throw new Error("DB Error")
             }
-        }
+        }      
     }
 }

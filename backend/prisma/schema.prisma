@@ -29,7 +29,7 @@ model User {
   name String
   email String @unique
   password String 
-  sharableLink String?
+  sharableLink String? @unique
   contents Content[]
 }
 

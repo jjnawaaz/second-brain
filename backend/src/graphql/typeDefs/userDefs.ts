@@ -42,8 +42,8 @@ type UserResponse {
 
 type UsersResponse {
     message: String!
-    success: Boolean
-    users: [User!]!
+    success: Boolean!
+    users: [User!]
 }
 
 
@@ -76,8 +76,8 @@ type DeleteContentResponse {
     success: Boolean!
 }
 
-type CreateSharableLinkResponse {
-    link: String!
+type GetSharableLinkResponse {
+    link: String
     success: Boolean!
     message: String!
 }
@@ -106,7 +106,8 @@ type Query {
     getContents: ContentsResponse
     getUser: UserResponse
     getAllUsers: UsersResponse
-    getContentById(id: ID!): ContentPayload
+    getContentsByLink(link: String!): ContentsResponse
+    getSharableLink: GetSharableLinkResponse
 }
 
 type Mutation {
@@ -115,7 +116,6 @@ type Mutation {
     createContent(data: CreateContentInput!): ContentResponse
     updateContent(id: ID!, data: UpdateContentInput!): ContentResponse
     deleteContent(id: ID!): DeleteContentResponse
-    createSharableLink: CreateSharableLinkResponse
     logoutUser: SignInResponse
 }
 
