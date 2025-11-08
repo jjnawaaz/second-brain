@@ -2,6 +2,7 @@ import { prisma } from "../../prisma/client.js"
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import 'dotenv/config'
+import type { Response } from "express"
 export const userResolvers = {
     Query: {
         getUser: async(_:any, args:{id: string})=>{
@@ -18,8 +19,8 @@ export const userResolvers = {
                 message: "User fetched",
                 success: true,
                 user: {
-                    name: user?.name,
-                    username: user?.username
+                    name: user.name,
+                    email: user.email
                 }
             }
             } catch(e:any) {
@@ -28,31 +29,49 @@ export const userResolvers = {
         }
     },
     Mutation: {
-        SignUpUser: async(_:any,args: {data: {name: string, username: string, password: string}}) => {
-            const {username, name, password} = args.data
+        signupUser: async(_:any,args: {data: {name: string, email: string, password: string, sharableLink: string}},{res}:{res: Response}) => {
+            const {email, name, password, sharableLink} = args.data
+            
             try{
                 const user = await prisma.user.create({
                 data: {
                     name: name,
-                    username: username,
-                    password: password
+                    email: email,
+                    password: password,
+                    sharableLink: sharableLink ? sharableLink : ''
                 }
             })
-               return {
+            if(user){
+                const token = jwt.sign({userId: user.id},process.env.JWT_SECRET as string,{expiresIn: '1d'})
+            res.cookie(process.env.COOKIE_NAME as string,token,{
+                httpOnly: true,
+                // secure: true 
+                maxAge: 7 * 24 * 60 * 60 * 1000
+            })
+            return {
                 success: true,
                 message: "User signed up successfully",
-                user
+                token: token
             }
+            } 
             }catch(e:any){
-                throw new Error(e)
+                
+                if(e.code === 'P2002') {
+                 return {
+                    message: "User already exists",
+                    success: false
+                }
+                }
+                throw new Error("DB Error")
+                
             }    
         },
-        SignInUser: async(_:any,args: {data:{username:string,password:string}})=>{
-            const {username, password} = args.data
+        signinUser: async(_:any,args: {data:{email:string,password:string}},{res}:{res: Response})=>{
+            const {email, password} = args.data
             
             const user = await prisma.user.findUnique({
                 where:{
-                    username: username
+                    email: email
                 }
             })
             if(!user) return {
@@ -66,10 +85,33 @@ export const userResolvers = {
                 success: false
             }
             // set cookie and token here 
-
+            const token = jwt.sign({userId: user.id},process.env.JWT_SECRET as string,{expiresIn: '1d'})
+            console.log(token)
+            res.cookie(process.env.COOKIE_NAME as string,token,{
+                httpOnly: true,
+                // secure: true
+                maxAge: 7 * 24 * 60 * 60 * 1000
+            })  
             return {
                 success: true,
-                message: "User logged In"
+                message: "User logged In",
+                token: token
+            }
+        },
+        createContent: async(_:any, args: {data: {title: string, description: string, link: string, tags: [string]}},{payload}:{payload: any}) => {
+            console.log(payload.userId)
+            const user = await prisma.user.findUnique({
+                where: {
+                    id: Number(payload.userId)
+                }
+            })
+            if(user){
+                // logic to make content
+            }else{
+                return {
+                    message: "Auth Error",
+                    success: false
+                }
             }
         }
     }
