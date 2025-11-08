@@ -59,6 +59,12 @@ type ContentPayload {
     updatedAt: String
 }
 
+type ContentResponse {
+    success: Boolean!
+    message: String!
+    content: ContentPayload
+}
+
 type ContentsResponse {
     message: String!
     success: Boolean!
@@ -106,10 +112,11 @@ type Query {
 type Mutation {
     signupUser(data: SignUpInput!) : SignInResponse
     signinUser(data:SignInInput!) : SignInResponse
-    createContent(data: CreateContentInput!): ContentPayload
-    updateContent(data: UpdateContentInput!): ContentPayload
+    createContent(data: CreateContentInput!): ContentResponse
+    updateContent(id: ID!, data: UpdateContentInput!): ContentResponse
     deleteContent(id: ID!): DeleteContentResponse
     createSharableLink: CreateSharableLinkResponse
+    logoutUser: SignInResponse
 }
 
 `
