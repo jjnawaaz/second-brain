@@ -1,3 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=BBH+Sans+Bartle&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+    .brainy-gradient {
+        @apply bg-gradient-to-r from-black to-main-color
+    }
+    .flex-center {
+        @apply flex items-center
+    }
+    .flex-justify-center {
+        @apply flex items-center justify-center
+    }
+    .glow-effect {
+        box-shadow: 0 0 20px theme('colors.main-color');
+    }
+
+ .brain-draw path {
+        transition: opacity 0.3s ease-in-out;
+    }
+    
+    /* Remove only 3 random paths on hover (37.5%) */
+    .brain-draw:hover path:nth-child(1),
+    .brain-draw:hover path:nth-child(5),
+    .brain-draw:hover path:nth-child(2) {
+        opacity: 0;
+    }
+    
+    /* Add staggered delays for disappearing effect */
+    .brain-draw:hover path:nth-child(1) { transition-delay: 0.1s; }
+    .brain-draw:hover path:nth-child(5) { transition-delay: 0.2s; }
+    .brain-draw:hover path:nth-child(2) { transition-delay: 0.4s; }
+}
