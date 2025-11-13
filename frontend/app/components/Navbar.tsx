@@ -3,16 +3,21 @@ import { LogIn, Pencil } from "lucide-react";
 import MobileNavBar from "./MobileNavbar";
 import BrainSVG from "../icons/brain";
 import Link from "next/link";
-import { useAuthStore } from "../store/userStore";
+import { useAuthStore, useMenuStore } from "../store/userStore";
 
 export default function Navbar() {
   const { isAuthenticated } = useAuthStore();
+  const { updateSideBarMobileOpen } = useMenuStore();
   return (
     <>
       <div className="top-0 sticky shadow-2xl bg-gradient-to-r from-black to-main-color flex-center justify-between px-3 h-16 text-white z-[10000]">
         {/* Logo and Text  */}
         <div className="flex-center gap-2">
-          <Link href={"/"} className="flex-center gap-2">
+          <Link
+            href={"/"}
+            className="flex-center gap-2"
+            onClick={() => updateSideBarMobileOpen(false)}
+          >
             <div className="">
               <BrainSVG />
             </div>

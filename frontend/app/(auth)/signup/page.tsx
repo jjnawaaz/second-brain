@@ -55,9 +55,9 @@ export default function Login() {
   }
   return (
     <>
-      <div className="brainy-gradient h-screen w-full relative z-0">
+      <div className="brainy-gradient h-[calc(100vh-64px)] w-full relative z-0">
         {/* Change Height here  */}
-        <div className="flex-justify-center sm:flex sm:justify-between text-white h-full w-full p-3">
+        <div className="flex-justify-center sm:flex sm:justify-between h-full text-white w-full p-3">
           {/* Left slider for pc  */}
           <motion.div
             initial={{ x: -2000 }}

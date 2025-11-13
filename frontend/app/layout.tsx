@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import Navbar from "./components/Navbar";
 
 export const metadata: Metadata = {
   title: "MindVault",
@@ -13,8 +14,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`antialiased`} cz-shortcut-listen="true">
-        {children}
+      <body
+        className={`antialiased brainy-gradient min-h-screen`}
+        cz-shortcut-listen="true"
+      >
+        <div className="flex flex-col min-h-screen">
+          <Navbar />
+          <div className="flex-1">{children}</div>
+        </div>
       </body>
     </html>
   );
