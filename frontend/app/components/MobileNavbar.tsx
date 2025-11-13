@@ -40,7 +40,7 @@ export default function MobileNavBar() {
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: -100, opacity: 0 }}
               transition={{ duration: 0.4, ease: "easeOut" }}
-              className="fixed shadow-2xl backdrop-blur-xl rounded-b-3xl h-auto w-1/2 right-0 top-16 z-[10000]"
+              className="fixed shadow-2xl backdrop-blur-xl rounded-b-3xl h-auto w-1/2 right-0 top-16 z-50"
             >
               <div className="flex flex-col items-center justify-center py-6">
                 {!isAuthenticated && (
