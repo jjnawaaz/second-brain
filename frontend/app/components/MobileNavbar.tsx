@@ -1,39 +1,109 @@
 "use client";
 
-import { LogIn, Menu, Pencil, X } from "lucide-react";
-import { useState } from "react";
+import { LogIn, LogOut, Menu, Pencil, X } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import Link from "next/link";
+import { useAuthStore, useMenuStore } from "../store/userStore";
+import { useRouter } from "next/navigation";
 
 export default function MobileNavBar() {
-  const [mobileOpen, setMobileOpen] = useState(false);
-
-  function handleClick() {
-    setMobileOpen((prev) => !prev);
+  const { sidebarMobileOpen, updateSideBarMobileOpen, updateSideBarOpen } =
+    useMenuStore();
+  const { isAuthenticated, logout } = useAuthStore();
+  const router = useRouter();
+  function handleButtonClick(result: boolean) {
+    updateSideBarOpen(false);
+    updateSideBarMobileOpen(result);
   }
-  console.log(mobileOpen);
+
+  async function handleLogout() {
+    updateSideBarMobileOpen(false);
+    const response = await logout();
+    if (response?.success) {
+      router.push("/");
+    }
+  }
+
   return (
     <>
-      <div>
-        {mobileOpen ? (
-          <X onClick={handleClick} />
+      <div className="">
+        {sidebarMobileOpen ? (
+          <X onClick={() => handleButtonClick(false)} />
         ) : (
-          <Menu onClick={handleClick} />
+          <Menu onClick={() => handleButtonClick(true)} />
         )}
-        <div
-          className={`absolute shadow-2xl border-2 border-transparent rounded-3xl h-auto w-full right-0 left-0 top-16 ${
-            mobileOpen ? "opacity-100" : "opacity-0"
-          }`}
-        >
-          <div className="flex flex-col items-center justify-center py-6">
-            <div className="py-5 flex-center justify-center gap-2 font-semibold w-44">
-              <LogIn />
-              Login
-            </div>
-            <div className="py-5 flex-center justify-center gap-2 font-semibold  w-44">
-              <Pencil />
-              SignUp
-            </div>
-          </div>
-        </div>
+
+        <AnimatePresence>
+          {sidebarMobileOpen && (
+            <motion.div
+              initial={{ y: -100, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: -100, opacity: 0 }}
+              transition={{ duration: 0.4, ease: "easeOut" }}
+              className="fixed shadow-2xl backdrop-blur-xl rounded-b-3xl h-auto w-1/2 right-0 top-16 z-[10000]"
+            >
+              <div className="flex flex-col items-center justify-center py-6">
+                {!isAuthenticated && (
+                  <div>
+                    <div className="py-5 flex-center justify-center gap-2 font-semibold w-44 z-[9999]">
+                      <Link
+                        href={"/login"}
+                        className="flex-center gap-2 cursor-pointer"
+                        onClick={() => handleButtonClick(false)}
+                      >
+                        Login
+                        <LogIn className="md:size-4 lg:size-5" />
+                      </Link>
+                    </div>
+                    <div className="py-5 flex-center justify-center gap-2 font-semibold  w-44 z-[9999]">
+                      <Link
+                        href={"/signup"}
+                        className="flex-center gap-2 cursor-pointer"
+                        onClick={() => handleButtonClick(false)}
+                      >
+                        Signup
+                        <Pencil className="md:size-3 lg:size-4" />
+                      </Link>
+                    </div>
+                  </div>
+                )}
+                {isAuthenticated && (
+                  <>
+                    <div className="py-5 flex-center justify-center gap-2 font-semibold  w-44 z-[9999]">
+                      <Link
+                        href={"/dashboard"}
+                        className="flex-center gap-2 cursor-pointer"
+                        onClick={() => {
+                          handleButtonClick(false);
+                        }}
+                      >
+                        Dashboard
+                      </Link>
+                    </div>
+                    <div
+                      className="py-5 flex-center justify-center gap-2 font-semibold  w-44 z-[9999]"
+                      onClick={handleLogout}
+                    >
+                      Logout
+                      <LogOut className="md:size-3 lg:size-4" />
+                    </div>
+                    {/* Get this from backend  */}
+                    <div className="py-5 flex-center justify-center gap-2 font-semibold  w-44 z-[9999]">
+                      <Link
+                        href={"/signup"}
+                        className="flex-center gap-2 cursor-pointer"
+                        onClick={() => handleButtonClick(false)}
+                      >
+                        Profile:
+                        <div className="text-sm font-semibold">jjnawaaz</div>
+                      </Link>
+                    </div>
+                  </>
+                )}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </>
   );
