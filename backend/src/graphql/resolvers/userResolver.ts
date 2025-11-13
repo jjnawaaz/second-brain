@@ -139,15 +139,14 @@ export const userResolvers = {
                 res.cookie(process.env.COOKIE_NAME as string,token,CookieOptions)
             return {
                 success: true,
-                message: "User signed up successfully",
-                token: token
+                message: "User signed up successfully"
             }
             } 
             }catch(e:any){
                 console.error(e)
                 if(e.code === 'P2002') {
                  return {
-                    message: "DB Error",
+                    message: "User Already Exists",
                     success: false
                 }
                 }

@@ -11,13 +11,24 @@ const app = express()
 
 const server = new ApolloServer({
     typeDefs: typeDefs,
-    resolvers: resolvers
+    resolvers: resolvers,
+    introspection: true
 })
 
 await server.start()
 
+
+app.get('/clear-cookies', (req: Request, res: Response) => {
+  res.clearCookie(process.env.COOKIE_NAME as string);
+  res.json({ message: 'Cookies cleared' });
+});
+
+
 app.use('/graphql',
-    cors(),
+    cors({
+        origin: true,
+        credentials: true
+    }),
     express.json(),
     cookieParser(),
     expressMiddleware(server,{
