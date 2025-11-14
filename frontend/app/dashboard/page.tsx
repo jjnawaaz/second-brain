@@ -32,7 +32,7 @@ export default function Dashboard() {
   const [openUpdateContent, setOpenUpdateContent] = useState(false);
   const [openDeleteContent, setOpenDeleteContent] = useState(false);
   const [selectedId, setSelectedId] = useState("");
-  const [selectedItem, setSelectedItem] = useState({});
+  const [selectedItem, setSelectedItem] = useState<Data | null>(null);
   const [filterType, setFilterType] = useState(ContentType.ALL);
   // import content states
 
@@ -135,7 +135,7 @@ export default function Dashboard() {
           <UpdateContentBox
             setOpenUpdateContent={setOpenUpdateContent}
             onUpdateSuccess={refreshData}
-            data={selectedItem}
+            data={selectedItem as Data}
           />
         )}
         {openDeleteContent && (
