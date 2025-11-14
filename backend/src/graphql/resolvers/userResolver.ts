@@ -24,7 +24,8 @@ export const userResolvers = {
                 success: true,
                 user: {
                     name: user.name,
-                    email: user.email
+                    email: user.email,
+                    sharableLink: user.sharableLink
                 }
             }
             } catch(e:any) {

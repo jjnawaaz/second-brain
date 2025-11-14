@@ -30,8 +30,7 @@ input SignInInput {
 type SignInResponse{
     message: String!
     success: Boolean!
-    token: String 
-    user: User    #change this later
+    token: String  
 }
 
 type UserResponse {
