@@ -1,13 +1,22 @@
 "use client";
-import { LogIn, Pencil } from "lucide-react";
+import { LogIn, LogOut, Pencil } from "lucide-react";
 import MobileNavBar from "./MobileNavbar";
 import BrainSVG from "../icons/brain";
 import Link from "next/link";
 import { useAuthStore, useMenuStore } from "../store/userStore";
+import { useRouter } from "next/navigation";
 
 export default function Navbar() {
-  const { isAuthenticated } = useAuthStore();
+  const { isAuthenticated, logout, username } = useAuthStore();
   const { updateSideBarMobileOpen } = useMenuStore();
+  const router = useRouter();
+  async function handleLogout() {
+    updateSideBarMobileOpen(false);
+    const response = await logout();
+    if (response?.success) {
+      router.push("/");
+    }
+  }
   return (
     <>
       <div className="top-0 sticky shadow-2xl bg-gradient-to-r from-black to-main-color flex-center justify-between px-3 h-16 text-white z-[10000]">
@@ -53,10 +62,20 @@ export default function Navbar() {
             </div>
           </div>
         )}
-        <div className="hidden ">
-          <div>Dashboard</div>
-          <div>Profile</div>
-        </div>
+        {isAuthenticated && (
+          <div className="hidden md:flex-center gap-7 px-2 ">
+            <div className="font-medium flex-center justify-between">
+              <Link href={"/dashboard"}>Dashboard</Link>
+            </div>
+            <div
+              className="py-5 flex-center gap-2 font-extralight"
+              onClick={handleLogout}
+            >
+              {username}
+              <LogOut className="md:size-4" />
+            </div>
+          </div>
+        )}
         {/* For Mobile  */}
         <div className="md:hidden">
           <MobileNavBar />

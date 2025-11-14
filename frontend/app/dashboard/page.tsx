@@ -28,7 +28,12 @@ export default function Dashboard() {
     useMenuStore();
   const router = useRouter();
   const { isAuthenticated } = useAuthStore();
-
+  const [openContent, setOpenContent] = useState(false);
+  const [openUpdateContent, setOpenUpdateContent] = useState(false);
+  const [openDeleteContent, setOpenDeleteContent] = useState(false);
+  const [selectedId, setSelectedId] = useState("");
+  const [selectedItem, setSelectedItem] = useState({});
+  const [filterType, setFilterType] = useState(ContentType.ALL);
   // import content states
 
   const { resetStore, getContent } = useContentStore();
@@ -51,19 +56,26 @@ export default function Dashboard() {
     getData();
   }, [getContent]);
 
-  console.log(data);
+  // Filter the data client-side based on current filterType
+  const filteredData =
+    filterType === ContentType.ALL
+      ? data
+      : data.filter((item) => item.type === filterType);
+
+  async function refreshData() {
+    const response = await getContent();
+    if (response?.success) {
+      setData(response.contents as Data[]);
+    }
+  }
 
   function handleClick(result: boolean) {
     updateSideBarMobileOpen(false);
     updateSideBarOpen(result);
   }
 
-  const [openContent, setOpenContent] = useState(false);
-  const [openUpdateContent, setOpenUpdateContent] = useState(false);
-  const [openDeleteContent, setOpenDeleteContent] = useState(false);
-  const [selectedId, setSelectedId] = useState("");
-
-  function handleUpdateClick(item) {
+  function handleUpdateClick(item: Data) {
+    setSelectedItem(item);
     setOpenUpdateContent(true);
   }
   function handleDeleteClick(item: string) {
@@ -84,7 +96,7 @@ export default function Dashboard() {
   }, [openContent, openUpdateContent, openDeleteContent]);
   return (
     <>
-      <div className=" flex-1 relative border-2 border-red-600 min-h-[calc(100vh-64px)] overflow-auto">
+      <div className=" flex-1 relative min-h-[calc(100vh-64px)] overflow-auto">
         {/* side bar open icon  */}
         {!sidebarOpen && (
           <div className="fixed inset-0 left-1 top-16 z-10">
@@ -95,7 +107,12 @@ export default function Dashboard() {
           </div>
         )}
         {/* sidebar menu items  */}
-        {sidebarOpen && <SideBar handleClick={handleClick} />}
+        {sidebarOpen && (
+          <SideBar
+            handleButtonClick={handleClick}
+            setFilterType={setFilterType}
+          />
+        )}
 
         {/* Add Content Plus Button  */}
         <div className="fixed bottom-5 right-5 backdrop-blur-sm rounded-full brainy-gradient shadow-md shadow-black z-20 ">
@@ -106,21 +123,31 @@ export default function Dashboard() {
         </div>
 
         {/* Add content pop up menu  */}
-        {openContent && <CreateContentBox setOpenContent={setOpenContent} />}
+        {openContent && (
+          <CreateContentBox
+            setOpenContent={setOpenContent}
+            onCreateSuccess={refreshData}
+          />
+        )}
 
         {/* Update Content pop up menu  */}
         {openUpdateContent && (
-          <UpdateContentBox setOpenUpdateContent={setOpenUpdateContent} />
+          <UpdateContentBox
+            setOpenUpdateContent={setOpenUpdateContent}
+            onUpdateSuccess={refreshData}
+            data={selectedItem}
+          />
         )}
         {openDeleteContent && (
           <DeletePopUp
             setOpenDeleteContent={setOpenDeleteContent}
             selectedId={selectedId}
+            onDeleteSuccess={refreshData}
           />
         )}
         {/* Cards render here  */}
         <div className="min-h-full brainy-gradient p-10 text-white grid grid-cols-1 md:grid-cols-2 md:gap-x-12 lg:grid-cols-3 gap-y-12">
-          {data.map((item) => (
+          {filteredData.map((item) => (
             <div
               key={item.id}
               className="bg-transparent rounded-lg shadow-sm p-3 border-2 border-gray-200 flex flex-col gap-y-6"
@@ -153,7 +180,7 @@ export default function Dashboard() {
                 <div className="flex-center text-sm">Tags:</div>
                 <div className="flex-center flex-wrap gap-2 text-xs">
                   {item.tags.map((item) => (
-                    <span key={item}>#Music</span>
+                    <span key={item}>#{item}</span>
                   ))}
                 </div>
               </div>

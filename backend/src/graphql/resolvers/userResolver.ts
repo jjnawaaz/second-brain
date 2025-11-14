@@ -8,13 +8,14 @@ import type { Link } from "../../prisma/generated/client/index.js"
 import { nanoid } from "nanoid"
 export const userResolvers = {
     Query: {
-        getUser: async(_:any, args:{id: string})=>{
+        getUser: async(_:any,__:any,{payload}:{payload:any})=>{
         try{
-            const {id} = args
-            if(!id) throw new Error("Authentication Error")
+            
+            const {userId} = payload
+            if(!userId) throw new Error("Authentication Error")
             const user = await prisma.user.findUnique({
                 where: {
-                    id: Number(id)
+                    id: Number(userId)
                 }
             })
             if(!user) throw new Error("User not found")

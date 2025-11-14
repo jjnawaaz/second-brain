@@ -21,7 +21,8 @@ export default function Login() {
     updateName,
   } = useUserStore();
 
-  const { signup, authError, setAuthError, isAuthenticated } = useAuthStore();
+  const { signup, authError, setAuthError, isAuthenticated, getUser } =
+    useAuthStore();
   const router = useRouter();
 
   useEffect(() => {
@@ -50,6 +51,7 @@ export default function Login() {
     };
     const result = await signup(data);
     if (result?.success) {
+      getUser();
       router.push("/dashboard");
     }
   }
