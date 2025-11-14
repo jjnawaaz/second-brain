@@ -19,7 +19,8 @@ export default function Login() {
     updatePasswordVisible,
   } = useUserStore();
 
-  const { login, authError, setAuthError, isAuthenticated } = useAuthStore();
+  const { login, authError, setAuthError, isAuthenticated, getUser } =
+    useAuthStore();
   const router = useRouter();
 
   useEffect(() => {
@@ -48,6 +49,7 @@ export default function Login() {
     const result = await login(data);
 
     if (result?.success) {
+      getUser();
       router.push("/dashboard");
     }
   }

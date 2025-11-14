@@ -19,6 +19,7 @@ type Action = {
     updatePassword: (password: State['password'])=>void
     updateError: (error: State['error']) => void
     updatePasswordVisible: (passwordVisible: State['passwordVisible']) => void
+   
 }
 
 export const useUserStore = create<State & Action>((set)=>({
@@ -27,6 +28,9 @@ export const useUserStore = create<State & Action>((set)=>({
     password:'',
     error:false,
     passwordVisible: false,
+    
+
+    // set actions
     updateEmail:(email) => set(()=>({email: email})),
     updateName: (name) => set(()=>({name: name})),
     updatePassword:(password)=> set(()=>({password: password})),
@@ -63,6 +67,7 @@ interface AuthState {
     isAuthenticated: boolean
     isLoading: boolean
     authError: string
+    username?: string
 
     // Actions
     setAuthError: (authError: string)=>void
@@ -70,6 +75,7 @@ interface AuthState {
     logout: ()=>Promise<{success?: boolean,message?: string} | undefined>
     signup: (data: {email:string, password: string, name: string})=>Promise<{success?:boolean, message?: string} | undefined>
     // checkAuth: () => Promise<void>
+     getUser: ()=>Promise<{success: boolean,message: string, name?: string} | undefined>
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -185,7 +191,34 @@ export const useAuthStore = create<AuthState>()(
                 }catch(e){
                 console.error(e)
             }
+            },
+        getUser: async()=>{
+            const response = await axiosClient.post('/graphql',{
+            query: `
+            query getUser{
+                    getUser {
+                    user {
+                        name
+                    }
+                    }
+                    }
+            `
+        })
+        if(response.data.data.getUser.success){
+            return {
+                message: response.data.data.getUser.message,
+                success: response.data.data.getUser.success
             }
+        }
+
+        set({username: response.data.data.getUser.user.name})
+
+        return {
+            message: response.data.data.getUser.message,
+            success: response.data.data.getUser.success,
+            name: response.data.data.getUser.user.name
+        }
+    }
         }),
         {name:'auth-store'}
     )

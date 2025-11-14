@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 export default function MobileNavBar() {
   const { sidebarMobileOpen, updateSideBarMobileOpen, updateSideBarOpen } =
     useMenuStore();
-  const { isAuthenticated, logout } = useAuthStore();
+  const { isAuthenticated, logout, username } = useAuthStore();
   const router = useRouter();
   function handleButtonClick(result: boolean) {
     updateSideBarOpen(false);
@@ -81,22 +81,11 @@ export default function MobileNavBar() {
                       </Link>
                     </div>
                     <div
-                      className="py-5 flex-center justify-center gap-2 font-semibold  w-44 z-[9999]"
+                      className="py-5 flex-center justify-center gap-2 font-medium text-md w-44 z-[9999]"
                       onClick={handleLogout}
                     >
-                      Logout
+                      {username}
                       <LogOut className="md:size-3 lg:size-4" />
-                    </div>
-                    {/* Get this from backend  */}
-                    <div className="py-5 flex-center justify-center gap-2 font-semibold  w-44 z-[9999]">
-                      <Link
-                        href={"/signup"}
-                        className="flex-center gap-2 cursor-pointer"
-                        onClick={() => handleButtonClick(false)}
-                      >
-                        Profile:
-                        <div className="text-sm font-semibold">jjnawaaz</div>
-                      </Link>
                     </div>
                   </>
                 )}

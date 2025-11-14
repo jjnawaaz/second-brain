@@ -22,6 +22,8 @@ export default function Hero() {
               transition={{
                 duration: 3,
                 delay: 0.3,
+                repeat: Infinity,
+                repeatType: "reverse",
               }}
               fill="transparent"
               strokeWidth="0.5"
@@ -39,6 +41,8 @@ export default function Hero() {
               transition={{
                 duration: 3,
                 delay: 0.3,
+                repeat: Infinity,
+                repeatType: "reverse",
               }}
               fill="transparent"
               strokeWidth="0.5"
@@ -56,6 +60,8 @@ export default function Hero() {
               transition={{
                 duration: 3,
                 delay: 0.3,
+                repeat: Infinity,
+                repeatType: "reverse",
               }}
               fill="transparent"
               strokeWidth="0.5"
