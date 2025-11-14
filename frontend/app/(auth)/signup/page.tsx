@@ -120,7 +120,7 @@ export default function Login() {
                 </div>
                 <div className="flex-justify-center border-2 border-white mt-2 p-1 rounded-full cursor-pointer">
                   <button
-                    className="text-sm font-semibold"
+                    className="text-sm font-semibold z-20"
                     onClick={handleClick}
                   >
                     SignUp
