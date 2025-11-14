@@ -80,7 +80,7 @@ export default function Login() {
                   SignUp
                 </div>
                 <hr />
-                <div className="flex flex-col font-semibold">
+                <div className="flex flex-col font-medium">
                   Name:
                   <input
                     type="text"
@@ -89,7 +89,7 @@ export default function Login() {
                     onChange={(e) => handleChange(e, updateName)}
                   />
                 </div>
-                <div className="flex flex-col font-semibold">
+                <div className="flex flex-col font-medium">
                   Email:
                   <input
                     type="text"
@@ -98,7 +98,7 @@ export default function Login() {
                     onChange={(e) => handleChange(e, updateEmail)}
                   />
                 </div>
-                <div className="flex flex-col font-semibold relative">
+                <div className="flex flex-col font-medium relative">
                   Password:
                   <div className="relative mt-3">
                     <input
@@ -119,13 +119,16 @@ export default function Login() {
                   </div>
                 </div>
                 <div className="flex-justify-center border-2 border-white mt-2 p-1 rounded-full cursor-pointer">
-                  <button className="text-sm font-bold" onClick={handleClick}>
+                  <button
+                    className="text-sm font-semibold"
+                    onClick={handleClick}
+                  >
                     SignUp
                   </button>
                 </div>
                 {error ? (
                   <>
-                    <div className="flex-justify-center font-extrabold text-red-600 text-xs">
+                    <div className="flex-justify-center font-semibold text-red-600 text-xs">
                       Error! Please enter all fields
                     </div>
                   </>
@@ -134,7 +137,7 @@ export default function Login() {
                 )}
                 {authError ? (
                   <>
-                    <div className="flex-justify-center font-extrabold text-red-600 text-xs">
+                    <div className="flex-justify-center font-semibold text-red-600 text-xs">
                       {authError}
                     </div>
                   </>

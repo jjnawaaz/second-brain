@@ -75,21 +75,21 @@ export default function Login() {
               <div className="flex flex-col gap-3 py-10 px-6">
                 <div className="text-2xl text-center font-extrabold">Login</div>
                 <hr />
-                <div className="flex flex-col font-semibold">
+                <div className="flex flex-col font-medium">
                   Email:
                   <input
                     type="text"
-                    placeholder="email"
+                    placeholder="jj@test.com"
                     className="mt-3 rounded-sm outine-none bg-transparent border-2 border-main-color focus:outline-gray-400 "
                     onChange={(e) => handleChange(e, updateEmail)}
                   />
                 </div>
-                <div className="flex flex-col font-semibold relative">
+                <div className="flex flex-col font-medium relative">
                   Password:
                   <div className="relative mt-3">
                     <input
                       type={passwordVisible ? "text" : "password"} // Changed from "text" to "password"
-                      placeholder="password"
+                      placeholder="12345"
                       className="w-full rounded-sm outline-none bg-transparent border-2 border-main-color focus:outline-gray-400 pr-8"
                       onChange={(e) => handleChange(e, updatePassword)}
                     />
@@ -105,13 +105,16 @@ export default function Login() {
                   </div>
                 </div>
                 <div className="flex-justify-center border-2 border-white mt-2 p-1 rounded-full cursor-pointer">
-                  <button className="text-sm font-bold" onClick={handleClick}>
+                  <button
+                    className="text-sm font-semibold"
+                    onClick={handleClick}
+                  >
                     Login
                   </button>
                 </div>
                 {error ? (
                   <>
-                    <div className="flex-justify-center font-extrabold text-red-600 text-xs">
+                    <div className="flex-justify-center font-semibold text-red-600 text-xs">
                       Error! Please enter all fields
                     </div>
                   </>
@@ -120,7 +123,7 @@ export default function Login() {
                 )}
                 {authError ? (
                   <>
-                    <div className="flex-justify-center font-extrabold text-red-600 text-xs">
+                    <div className="flex-justify-center font-semibold text-red-600 text-xs">
                       {authError}
                     </div>
                   </>
