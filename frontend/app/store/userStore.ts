@@ -137,7 +137,7 @@ export const useAuthStore = create<AuthState>()(
                         message: "Invalid error"
                     }
                 }
-                set({isAuthenticated: false})
+                set({isAuthenticated: false, isLoading: false})
                 return {
                     success: response.data.data.logoutUser.success,
                     message: response.data.data.logoutUser.message
@@ -198,7 +198,8 @@ export enum ContentType{
    YOUTUBE = 'YOUTUBE',
    LINKEDIN = "LINKEDIN",
    TWEET = "TWEET",
-   DOCUMENT = "DOCUMENT"
+   DOCUMENT = "DOCUMENT",
+   ALL='ALL'
 }
 
 interface ContentState{
@@ -223,7 +224,7 @@ interface ContentState{
     resetStore: ()=>void
     getContent: ()=>Promise<{message?: string, success?: boolean, contents?:[{id?:string,title?: string, description?:string, link?: string, type?: ContentType, tags?: string[]}]} | undefined>
     addContent: (data: {title: string, description: string, link: string, type: ContentType, tags: string[]})=>Promise<{message?: string,success?: boolean, content?: {title: string, id: string, description: string, tags: string[],type: ContentType, userId: string}} | undefined>
-    updateContent: (data: {title?: string, description?: string, link?: string, type?: ContentType, tags?: string[]})=>Promise<{message?: string,success?: boolean, content?: {title: string, id: string, description: string, tags: string[],type: ContentType, userId: string}} | undefined>
+    updateContent: (id:string,data: {title: string, description: string, link: string, type: ContentType, tags: string[]})=>Promise<{message?: string,success?: boolean }| undefined>
     deleteContent: (id: string) => Promise<{success?: boolean, message?:string} | undefined>
 }
 
@@ -241,6 +242,7 @@ export const useContentStore = create<ContentState>()(
                 tagError: '',
                 deleteNo: false,
                 deleteYes: false,
+                error:'',
 
             // reset Store
             resetStore: ()=> set({
@@ -261,32 +263,32 @@ export const useContentStore = create<ContentState>()(
             setType:(type: ContentType)=>set(()=>({type: type})),
             setTag: (tag: string)=>set(()=>({tag: tag})),
             setTags: (tag: string) => set((state) => {
-                // Check if we already have 4 tags
+                // Check if tags is more than 4
                 if (state.tags.length >= 4) {
                     return {
                         tagError: 'Maximum 4 tags allowed'
                     };
                 }
                 
-                // Check if tag is empty
+                // Check for empty strings
                 if (tag.trim() === '') {
                     return {
                         tagError: 'Tag cannot be empty'
                     };
                 }
                 
-                // Check if tag already exists
+                // check if it is existing tag
                 if (state.tags.includes(tag.trim())) {
                     return {
                         tagError: 'Tag already exists'
                     };
                 }
                 
-                // Add the tag and clear error
+                
                 return {
                     tags: [...state.tags, tag.trim()],
-                    tag: '', // Clear the input field
-                    tagError: '' // Clear any previous errors
+                    tag: '', 
+                    tagError: '' 
                 };
             }),
             setDeleteTag: (id:number)=>set((state)=>({
@@ -295,9 +297,10 @@ export const useContentStore = create<ContentState>()(
 
             setTagError: (tagError: string)=>set({tagError: tagError}),
             setError: (error: string)=>set(({error: error})),
-            // mutations 
+            
 
 
+            // Mutations
             getContent: async()=>{
                 const response = await axiosClient.post('/graphql',{
                     query: `
@@ -388,7 +391,52 @@ export const useContentStore = create<ContentState>()(
                     success: response.data.data.createContent.success
                 }
             },
-            updateContent: ()=>{},
+            updateContent: async(id: string,data:{title:string,description:string,link:string,type:ContentType,tags:string[]})=>{
+                console.log(id,data)
+                try{
+                    const response = await axiosClient.post('/graphql',{
+                    query: `
+                    mutation updateContent( $id: ID!, $data: UpdateContentInput!) {
+                                            updateContent(id: $id, data: $data) {
+                                            content {
+                                                userId
+                                                title
+                                                link
+                                                description
+                                                tags
+                                                type
+                                                }
+                                                success
+                                                message
+                                            }
+                                    }
+                             `,
+                             variables:{
+                                id: id,
+                                data:{
+                                    title: data.title,
+                                    description: data.description,
+                                    link: data.link,
+                                    tags: data.tags,
+                                    type: data.type
+                                }
+                             }
+                })
+                 if(response.data.data.updateContent.success === false){
+                    
+                    return {
+                        message: response.data.data.updateContent.message,
+                        success: response.data.data.updateContent.success
+                    }
+                }
+                return {
+                    message: response.data.data.updateContent.message,
+                    success: response.data.data.updateContent.success
+                }
+                }catch(e){
+                    console.error(e)
+                }
+            },
             deleteContent: async(id: string)=>{
                 try{
                     const response = await axiosClient.post('/graphql',{

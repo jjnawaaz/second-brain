@@ -1,14 +1,27 @@
-import { ChangeEvent } from "react";
+import { ChangeEvent, useEffect } from "react";
 import { ContentType, useContentStore } from "../store/userStore";
 import { Trash, X } from "lucide-react";
 
-interface UpdateContentBoxProps {
+interface Data {
+  id: string;
+  title: string;
+  description: string;
+  link: string;
+  type: ContentType;
+  tags: string[];
+}
+
+interface CreateContentBoxProps {
   setOpenUpdateContent: (value: boolean) => void;
+  onUpdateSuccess?: () => void;
+  data: Data;
 }
 
 export default function UpdateContentBox({
   setOpenUpdateContent,
-}: UpdateContentBoxProps) {
+  onUpdateSuccess,
+  data,
+}: CreateContentBoxProps) {
   const {
     title,
     setTitle,
@@ -23,19 +36,40 @@ export default function UpdateContentBox({
     setTag,
     tag,
     setDeleteTag,
+    updateContent,
+    error,
+    setError,
+    resetStore,
   } = useContentStore();
+
+  // Set variables
+  useEffect(() => {
+    if (data) {
+      setTitle(data.title);
+      setDescription(data.description);
+      setLink(data.link);
+      setType(data.type);
+      for (let i = 0; i < data.tags.length; i++) {
+        setTags(data.tags[i]);
+      }
+    }
+  }, []);
+
   function handleChange<T>(
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     func: (data: T) => void
   ) {
+    setError("");
     func(e.target.value as T);
   }
 
   function handleTypeChange(e: ChangeEvent<HTMLInputElement>) {
+    setError("");
     setType(e.target.value as ContentType);
   }
 
   function handleTagClick() {
+    setError("");
     setTags(tag);
     setTag("");
   }
@@ -44,22 +78,43 @@ export default function UpdateContentBox({
     setDeleteTag(id);
   }
 
-  function handleContentClick() {
-    console.log(title, description, link, type, tags);
+  async function handleContentClick() {
+    if (!title || !description || !link || !type || !tags) {
+      setError("Error enter all fields");
+      return;
+    }
+    const updateData = {
+      title: title,
+      description: description,
+      link: link,
+      type: type,
+      tags: tags,
+    };
+    console.log(updateData);
+
+    const response = await updateContent(data.id, updateData);
+    if (response?.success) {
+      alert("Link updated");
+      setOpenUpdateContent(false);
+      resetStore();
+      onUpdateSuccess?.();
+    } else {
+      alert("Couldn't add links");
+    }
   }
   return (
     <>
-      <div className="fixed inset-0 top-10 h-screen w-full backdrop-blur-sm z-[10000]">
-        <div className="flex items-center justify-center h-full w-full">
+      <div className="fixed inset-0 top-16 h-screen w-full  backdrop-blur-sm z-[10000]">
+        <div className="flex items-center justify-center h-full w-full ">
           {" "}
           {/* Center container */}
-          <div className="flex items-center justify-center min-h-screen p-4">
-            <div className="flex flex-col gap-2 rounded-xl  h-auto max-h-[85vh] w-full max-w-2xl mx-auto brainy-gradient text-white overflow-y-auto">
+          <div className="flex items-center justify-center min-h-screen p-4 overflow-hidden">
+            <div className="flex flex-col gap-2 rounded-xl  h-auto max-h-[70vh] w-full mx-auto brainy-gradient text-white overflow-y-auto">
               <div className="flex justify-end w-full p-3 sticky top-0 bg-gradient-to-r from-black to-main-color z-10">
                 <X onClick={() => setOpenUpdateContent(false)} />
               </div>
               <div className="flex justify-center w-full text-lg font-bold pb-4">
-                Update Links
+                Update Link
               </div>
               <div className="flex flex-col gap-3 m-2 px-4 pb-6">
                 <div className=" flex-center justify-between p-3">
@@ -68,6 +123,7 @@ export default function UpdateContentBox({
                     <input
                       type="text"
                       placeholder="Title"
+                      value={title}
                       className="p-0.5 bg-transparent border-t-2 rounded-md focus:outline-main-color border-b-2 border-white"
                       onChange={(e) => handleChange<string>(e, setTitle)}
                     />
@@ -78,6 +134,7 @@ export default function UpdateContentBox({
                   <div>
                     <textarea
                       placeholder="Description"
+                      value={description}
                       className="bg-transparent border-b-2 border-t-2 p-2  border-white rounded-md focus:outline-main-color"
                       onChange={(e) => handleChange<string>(e, setDescription)}
                     />
@@ -89,6 +146,7 @@ export default function UpdateContentBox({
                     <input
                       type="text"
                       placeholder="Link"
+                      value={link}
                       className="p-0.5 bg-transparent border-b-2 border-t-2 border-white rounded-md focus:outline-main-color"
                       onChange={(e) => handleChange<string>(e, setLink)}
                     />
@@ -162,6 +220,7 @@ export default function UpdateContentBox({
                   <input
                     type="text"
                     placeholder="Tag"
+                    value={tag}
                     className="p-0.5 bg-transparent w-1/3 border-b-2 border-t-2 border-white rounded-md focus:outline-main-color"
                     onChange={(e) => handleChange<string>(e, setTag)}
                   />
@@ -172,7 +231,7 @@ export default function UpdateContentBox({
                     Add tag
                   </button>
                 </div>
-                <div className=" font-medium flex-center gap-x-10 px-2 justify-around text-center relative h-10 overflow-hidden">
+                <div className="font-medium flex-center px-2 justify-around text-center relative h-10 overflow-hidden">
                   {tags && (
                     <>
                       {tags.map((item, id) => (
@@ -198,6 +257,13 @@ export default function UpdateContentBox({
                 >
                   Update Link
                 </button>
+                {error && (
+                  <>
+                    <div className="text-sm text-red-500 flex-center justify-center font-semibold">
+                      {error}
+                    </div>
+                  </>
+                )}
               </div>
             </div>
           </div>

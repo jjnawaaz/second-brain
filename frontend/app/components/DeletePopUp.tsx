@@ -1,22 +1,24 @@
-import { ChangeEvent } from "react";
-import { ContentType, useContentStore } from "../store/userStore";
-import { Trash, X } from "lucide-react";
+import { useContentStore } from "../store/userStore";
+import { X } from "lucide-react";
 
 interface DeleteContentBoxProps {
   setOpenDeleteContent: (value: boolean) => void;
   selectedId: string;
+  onDeleteSuccess?: () => void;
 }
 
 export default function DeletePopUp({
   setOpenDeleteContent,
   selectedId,
+  onDeleteSuccess,
 }: DeleteContentBoxProps) {
-  const { title, deleteContent } = useContentStore();
+  const { deleteContent } = useContentStore();
   async function handleDelete(id: string) {
     const response = await deleteContent(id);
     if (response?.success) {
       alert("Link deleted");
       setOpenDeleteContent(false);
+      onDeleteSuccess?.();
     } else {
       alert(response?.message);
     }

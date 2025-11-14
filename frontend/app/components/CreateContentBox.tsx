@@ -1,13 +1,15 @@
-import { ChangeEvent } from "react";
+import { ChangeEvent, useEffect } from "react";
 import { ContentType, useContentStore } from "../store/userStore";
 import { Trash, X } from "lucide-react";
 
 interface CreateContentBoxProps {
   setOpenContent: (value: boolean) => void;
+  onCreateSuccess?: () => void;
 }
 
 export default function CreateContentBox({
   setOpenContent,
+  onCreateSuccess,
 }: CreateContentBoxProps) {
   const {
     title,
@@ -26,7 +28,14 @@ export default function CreateContentBox({
     addContent,
     error,
     setError,
+    resetStore,
   } = useContentStore();
+
+  // clean up data
+  useEffect(() => {
+    resetStore();
+  }, []);
+
   function handleChange<T>(
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     func: (data: T) => void
@@ -66,18 +75,19 @@ export default function CreateContentBox({
     if (response?.success) {
       alert("Link added");
       setOpenContent(false);
+      onCreateSuccess?.();
     } else {
       alert("Couldn't add links");
     }
   }
   return (
     <>
-      <div className="fixed inset-0 top-10 h-screen w-full backdrop-blur-sm z-[10000]">
+      <div className="fixed inset-0 top-16 h-screen w-full backdrop-blur-sm z-[10000]">
         <div className="flex items-center justify-center h-full w-full">
           {" "}
           {/* Center container */}
-          <div className="flex items-center justify-center min-h-screen p-4">
-            <div className="flex flex-col gap-2 rounded-xl  h-auto max-h-[85vh] w-full max-w-2xl mx-auto brainy-gradient text-white overflow-y-auto">
+          <div className="flex items-center justify-center min-h-screen overflow-hidden p-4">
+            <div className="flex flex-col gap-2 rounded-xl  h-auto max-h-[70vh] w-full mx-auto brainy-gradient text-white overflow-y-auto">
               <div className="flex justify-end w-full p-3 sticky top-0 bg-gradient-to-r from-black to-main-color z-10">
                 <X onClick={() => setOpenContent(false)} />
               </div>
@@ -195,7 +205,7 @@ export default function CreateContentBox({
                     Add tag
                   </button>
                 </div>
-                <div className="font-medium flex-center gap-x-10 px-2 justify-around text-center relative h-10 overflow-hidden">
+                <div className="font-medium flex-center px-2 justify-around text-center relative h-10 overflow-hidden">
                   {tags && (
                     <>
                       {tags.map((item, id) => (
