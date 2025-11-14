@@ -64,11 +64,11 @@ export default function Navbar() {
         )}
         {isAuthenticated && (
           <div className="hidden md:flex-center gap-7 px-2 ">
-            <div className="font-medium flex-center justify-between">
+            <div className="font-medium flex-center justify-between cursor-pointer">
               <Link href={"/dashboard"}>Dashboard</Link>
             </div>
             <div
-              className="py-5 flex-center gap-2 font-extralight"
+              className="py-5 flex-center gap-2 font-extralight cursor-pointer"
               onClick={handleLogout}
             >
               {username}
