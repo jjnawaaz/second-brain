@@ -94,7 +94,7 @@ export const useAuthStore = create<AuthState>()(
                     query: `mutation SignInUser($data: SignInInput!){
                             signinUser(data: $data) {
                             success,
-                            message,
+                            message
                              }
                             }`
                             ,
@@ -113,7 +113,8 @@ export const useAuthStore = create<AuthState>()(
                     })
                     return {
                         message: response.data.data.signinUser.message,
-                        success: response.data.data.signinUser.success
+                        success: response.data.data.signinUser.success,
+                        token: response.data.data.signinUser.token,
                     }
                 }
                 set({isLoading: false, isAuthenticated: true})
@@ -136,7 +137,6 @@ export const useAuthStore = create<AuthState>()(
                                     }
                                 }`
                 })
-                console.log(response.data.data.logoutUser)
                 if(response.data.data.logoutUser.success === false) {
                     set({isLoading: false})
                     return {
@@ -170,7 +170,6 @@ export const useAuthStore = create<AuthState>()(
                     }
                 }
                 })
-                console.log(response.data.data.signupUser)
                 // check if the user signedUp
                 if(response.data.data.signupUser.success === false){
                     set({
@@ -204,13 +203,12 @@ export const useAuthStore = create<AuthState>()(
                     }
             `
         })
-        if(response.data.data.getUser.success){
+        if(response?.data.data.getUser.success){
             return {
                 message: response.data.data.getUser.message,
                 success: response.data.data.getUser.success
             }
         }
-
         set({username: response.data.data.getUser.user.name})
 
         return {
@@ -425,7 +423,6 @@ export const useContentStore = create<ContentState>()(
                 }
             },
             updateContent: async(id: string,data:{title:string,description:string,link:string,type:ContentType,tags:string[]})=>{
-                console.log(id,data)
                 try{
                     const response = await axiosClient.post('/graphql',{
                     query: `

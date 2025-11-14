@@ -47,7 +47,6 @@ export default function Login() {
       password: password,
     };
     const result = await login(data);
-
     if (result?.success) {
       getUser();
       router.push("/dashboard");

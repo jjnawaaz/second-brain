@@ -23,11 +23,11 @@ app.get('/clear-cookies', (req: Request, res: Response) => {
   res.json({ message: 'Cookies cleared' });
 });
 
-//process.env.FRONTEND_URL || 
+
 
 app.use('/graphql',
     cors({
-        origin: true,
+        origin: process.env.FRONTEND_URL,
         credentials: true
     }),
     express.json(),
