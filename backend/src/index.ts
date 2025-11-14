@@ -27,7 +27,7 @@ app.get('/clear-cookies', (req: Request, res: Response) => {
 
 app.use('/graphql',
     cors({
-        origin: 'http://localhost:3000',
+        origin: true,
         credentials: true
     }),
     express.json(),
