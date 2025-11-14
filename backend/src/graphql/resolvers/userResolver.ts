@@ -168,7 +168,6 @@ export const userResolvers = {
                 success: false
             }
             const validatePassword = await bcrypt.compare(password,user.password)
-            console.log(validatePassword)
             if(validatePassword == false) return {
                 message: "Invalid Credentials",
                 success: false
