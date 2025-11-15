@@ -7,6 +7,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      minHeight:{
+        'dscreen': '100dvh'
+      },
       colors:{
         'main-color':'#434343'
       },
