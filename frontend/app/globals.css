@@ -3,6 +3,11 @@
 @tailwind components;
 @tailwind utilities;
 
+
+
+
+
+
 @layer components {
     .brainy-gradient {
         @apply bg-gradient-to-r from-black to-main-color

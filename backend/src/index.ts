@@ -27,7 +27,7 @@ app.get('/clear-cookies', (req: Request, res: Response) => {
 
 app.use('/graphql',
     cors({
-        origin: process.env.FRONTEND_URL,
+        origin: [process.env.FRONTEND_URL as string,process.env.FRONTEND_URL1 as string],
         credentials: true
     }),
     express.json(),
