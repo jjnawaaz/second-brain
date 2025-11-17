@@ -82,7 +82,7 @@ export default function Hero() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.3 }}
-                className="font-extrabold text-3xl text-gray-200 md:text-6xl inline-flex flex-center gap-x-3 "
+                className="font-extrabold text-2xl text-gray-200 md:text-6xl inline-flex flex-center gap-x-3 "
               >
                 Your Second{" "}
                 <span className="text-gray-400 font-extrabold">Brain</span>
