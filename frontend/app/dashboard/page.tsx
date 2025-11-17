@@ -96,6 +96,20 @@ export default function Dashboard() {
       document.body.style.overflow = "unset";
     };
   }, [openContent, openUpdateContent, openDeleteContent]);
+
+  const parentVariants = {
+    hidden: {},
+    show: {
+      transition: {
+        staggerChildren: 0.2,
+      },
+    },
+  };
+
+  const childVariants = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0 },
+  };
   return (
     <>
       <div className=" flex-1 relative min-h-[calc(100vh-64px)] overflow-auto">
@@ -148,56 +162,67 @@ export default function Dashboard() {
           />
         )}
         {/* Cards render here  */}
-        <motion.div
-          initial={{ y: -300 }}
-          animate={{ y: 0 }}
-          transition={{
-            ease: "easeInOut",
-            duration: 0.5,
-            staggerChildren: 0.2,
-          }}
-          className="min-h-full brainy-gradient p-10 text-white grid grid-cols-1 md:grid-cols-2 md:gap-x-12 lg:grid-cols-3 gap-y-12"
-        >
-          {filteredData.map((item) => (
-            <div
-              key={item.id}
-              className="bg-transparent rounded-lg shadow-sm p-3 border-2 border-gray-200 flex flex-col gap-y-6"
+        {filteredData ? (
+          <>
+            {" "}
+            <motion.div
+              variants={parentVariants}
+              initial="hidden"
+              animate="show"
+              className="min-h-full brainy-gradient p-10 text-white grid grid-cols-1 md:grid-cols-2 md:gap-x-12 lg:grid-cols-3 gap-y-12"
             >
-              <div className="flex items-center justify-between border-2 border-white px-3 py-2 gap-2">
-                <h3 className="text-xl font-extrabold flex-1 truncate">
-                  {item.title}
-                </h3>
-                <div className="flex items-center gap-2 shrink-0">
-                  <Pen
-                    size={14}
-                    onClick={() => handleUpdateClick(item)}
-                    className="stroke-white cursor-pointer hover:text-gray-300 z-20"
-                  />
-                  <Trash
-                    size={14}
-                    onClick={() => handleDeleteClick(item.id)}
-                    className="stroke-white cursor-pointer hover:text-gray-300 z-20"
-                  />
-                </div>
-              </div>
-              <p className="text-justify">{item.description}</p>
-              <div className="w-full overflow-hidden break-all text-sm break-words whitespace-normal cursor-pointer">
-                <div className="font-semibold">Go to link: </div>
-                <a href={item.link} className="cursor-pointer text-blue-400">
-                  {item.link}
-                </a>
-              </div>
-              <div className="flex-center gap-2 overflow-hidden w-full">
-                <div className="flex-center text-sm">Tags:</div>
-                <div className="flex-center flex-wrap gap-2 text-xs">
-                  {item.tags.map((item) => (
-                    <span key={item}>#{item}</span>
-                  ))}
-                </div>
-              </div>
+              {filteredData.map((item) => (
+                <motion.div
+                  variants={childVariants}
+                  key={item.id}
+                  className="bg-transparent rounded-lg shadow-sm p-3 border-2 border-gray-200 flex flex-col gap-y-6"
+                >
+                  <div className="flex items-center justify-between border-2 border-white px-3 py-2 gap-2">
+                    <h3 className="text-xl font-extrabold flex-1 truncate">
+                      {item.title}
+                    </h3>
+                    <div className="flex items-center gap-2 shrink-0">
+                      <Pen
+                        size={14}
+                        onClick={() => handleUpdateClick(item)}
+                        className="stroke-white cursor-pointer hover:text-gray-300 z-20"
+                      />
+                      <Trash
+                        size={14}
+                        onClick={() => handleDeleteClick(item.id)}
+                        className="stroke-white cursor-pointer hover:text-gray-300 z-20"
+                      />
+                    </div>
+                  </div>
+                  <p className="text-justify">{item.description}</p>
+                  <div className="w-full overflow-hidden break-all text-sm break-words whitespace-normal cursor-pointer">
+                    <div className="font-semibold">Go to link: </div>
+                    <a
+                      href={item.link}
+                      className="cursor-pointer text-blue-400"
+                    >
+                      {item.link}
+                    </a>
+                  </div>
+                  <div className="flex-center gap-2 overflow-hidden w-full">
+                    <div className="flex-center text-sm">Tags:</div>
+                    <div className="flex-center flex-wrap gap-2 text-xs">
+                      {item.tags.map((item) => (
+                        <span key={item}>#{item}</span>
+                      ))}
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </motion.div>
+          </>
+        ) : (
+          <>
+            <div className="flex items-center justify-center w-full h-full">
+              <div className="w-10 h-10 border-4 border-gray-600 border-t-black rounded-full animate-spin"></div>
             </div>
-          ))}
-        </motion.div>
+          </>
+        )}
       </div>
     </>
   );
