@@ -95,7 +95,7 @@ export default function Hero() {
                     repeatType: "loop",
                   }}
                 >
-                  <BrainCircuit className="size-14  stroke-gray-100" />
+                  <BrainCircuit className="size-7 sm:size-11  stroke-gray-100" />
                 </motion.div>
               </motion.div>
             </div>
