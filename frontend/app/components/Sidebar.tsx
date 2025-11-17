@@ -22,7 +22,7 @@ export default function SideBar({
         </div>
         <div className="flex flex-col justify-evenly h-full">
           <div
-            className="flex-center gap-1 px-1 overflow-hidden"
+            className="flex-center gap-1 px-1 overflow-hidden cursor-pointer"
             onClick={() => handleClick(ContentType.DOCUMENT)}
           >
             <div className="flex-center">
@@ -31,7 +31,7 @@ export default function SideBar({
             <div className="text-xs md:text-sm font-semibold">Document</div>
           </div>
           <div
-            className="flex-center gap-1 px-1 overflow-hidden"
+            className="flex-center gap-1 px-1 overflow-hidden cursor-pointer"
             onClick={() => handleClick(ContentType.LINKEDIN)}
           >
             <div className="flex-center">
@@ -40,7 +40,7 @@ export default function SideBar({
             <div className="text-xs md:text-sm font-semibold">Linkedin</div>
           </div>
           <div
-            className="flex-center gap-1 px-1 overflow-hidden"
+            className="flex-center gap-1 px-1 overflow-hidden cursor-pointer"
             onClick={() => handleClick(ContentType.YOUTUBE)}
           >
             <div className="flex-center">
@@ -49,7 +49,7 @@ export default function SideBar({
             <div className="text-xs md:text-sm font-semibold">Youtube</div>
           </div>
           <div
-            className="flex-center gap-1 px-1 overflow-hidden"
+            className="flex-center gap-1 px-1 overflow-hidden cursor-pointer"
             onClick={() => handleClick(ContentType.TWEET)}
           >
             <div className="flex-center">
@@ -58,7 +58,7 @@ export default function SideBar({
             <div className="text-xs md:text-sm font-semibold">Tweet</div>
           </div>
           <div
-            className="flex-center gap-1 px-1 overflow-hidden"
+            className="flex-center gap-1 px-1 overflow-hidden cursor-pointer"
             onClick={() => handleClick(ContentType.ALL)}
           >
             <div className="flex-center">
