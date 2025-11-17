@@ -14,6 +14,8 @@ import SideBar from "../components/Sidebar";
 import UpdateContentBox from "../components/UpdateContentBox";
 import DeletePopUp from "../components/DeletePopUp";
 
+import { motion } from "motion/react";
+
 interface Data {
   id: string;
   title: string;
@@ -99,7 +101,7 @@ export default function Dashboard() {
       <div className=" flex-1 relative min-h-[calc(100vh-64px)] overflow-auto">
         {/* side bar open icon  */}
         {!sidebarOpen && (
-          <div className="fixed inset-0 left-1 top-16 z-15">
+          <div className="fixed inset-0 left-1 top-16 z-25">
             <SquareMenu
               className="size-8 stroke-white bg-transparent"
               onClick={() => handleClick(true)}
@@ -115,7 +117,7 @@ export default function Dashboard() {
         )}
 
         {/* Add Content Plus Button  */}
-        <div className="fixed bottom-5 right-5 backdrop-blur-sm rounded-full brainy-gradient shadow-md shadow-black z-15 ">
+        <div className="fixed bottom-5 right-5 backdrop-blur-sm rounded-full brainy-gradient shadow-md shadow-black z-25 ">
           <PlusIcon
             className="size-10 text-gray-300"
             onClick={() => setOpenContent(true)}
@@ -146,7 +148,16 @@ export default function Dashboard() {
           />
         )}
         {/* Cards render here  */}
-        <div className="min-h-full brainy-gradient p-10 text-white grid grid-cols-1 md:grid-cols-2 md:gap-x-12 lg:grid-cols-3 gap-y-12">
+        <motion.div
+          initial={{ y: -300 }}
+          animate={{ y: 0 }}
+          transition={{
+            ease: "easeInOut",
+            duration: 0.5,
+            staggerChildren: 0.2,
+          }}
+          className="min-h-full brainy-gradient p-10 text-white grid grid-cols-1 md:grid-cols-2 md:gap-x-12 lg:grid-cols-3 gap-y-12"
+        >
           {filteredData.map((item) => (
             <div
               key={item.id}
@@ -170,7 +181,7 @@ export default function Dashboard() {
                 </div>
               </div>
               <p className="text-justify">{item.description}</p>
-              <div className="w-full overflow-hidden break-all text-sm break-words whitespace-normal cursor-pointer z-40">
+              <div className="w-full overflow-hidden break-all text-sm break-words whitespace-normal cursor-pointer">
                 <div className="font-semibold">Go to link: </div>
                 <a href={item.link} className="cursor-pointer text-blue-400">
                   {item.link}
@@ -186,7 +197,7 @@ export default function Dashboard() {
               </div>
             </div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </>
   );

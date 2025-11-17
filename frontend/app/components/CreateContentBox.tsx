@@ -34,7 +34,7 @@ export default function CreateContentBox({
   // clean up data
   useEffect(() => {
     resetStore();
-  }, []);
+  }, [resetStore]);
 
   function handleChange<T>(
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,

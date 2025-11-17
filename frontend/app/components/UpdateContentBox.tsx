@@ -53,7 +53,7 @@ export default function UpdateContentBox({
         setTags(data.tags[i]);
       }
     }
-  }, []);
+  }, [data]);
 
   function handleChange<T>(
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
