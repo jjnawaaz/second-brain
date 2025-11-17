@@ -160,17 +160,17 @@ export default function Dashboard() {
                   <Pen
                     size={14}
                     onClick={() => handleUpdateClick(item)}
-                    className="stroke-white cursor-pointer hover:text-gray-300 hover:z-20"
+                    className="stroke-white cursor-pointer hover:text-gray-300 z-30"
                   />
                   <Trash
                     size={14}
                     onClick={() => handleDeleteClick(item.id)}
-                    className="stroke-white cursor-pointer hover:text-gray-300 hover:z-20"
+                    className="stroke-white cursor-pointer hover:text-gray-300 z-30"
                   />
                 </div>
               </div>
               <p className="text-justify">{item.description}</p>
-              <div className="w-full overflow-hidden break-all text-sm break-words whitespace-normal cursor-pointer z-15">
+              <div className="w-full overflow-hidden break-all text-sm break-words whitespace-normal cursor-pointer z-40">
                 <div className="font-semibold">Go to link: </div>
                 <a href={item.link} className="cursor-pointer text-blue-400">
                   {item.link}

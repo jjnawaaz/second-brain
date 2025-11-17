@@ -82,7 +82,7 @@ export default function CreateContentBox({
   }
   return (
     <>
-      <div className="fixed inset-0 top-16 h-screen w-full backdrop-blur-sm z-15">
+      <div className="fixed inset-0 top-16 h-screen w-full backdrop-blur-sm z-[100]">
         <div className="flex items-center justify-center h-full w-full">
           {" "}
           {/* Center container */}

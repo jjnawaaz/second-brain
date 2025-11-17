@@ -26,7 +26,7 @@ export default function DeletePopUp({
 
   return (
     <>
-      <div className="fixed inset-0 top-10 h-screen w-full backdrop-blur-sm z-15">
+      <div className="fixed inset-0 top-10 h-screen w-full backdrop-blur-sm z-[100]">
         <div className="flex items-center justify-center h-full w-full">
           {" "}
           {/* Center container */}

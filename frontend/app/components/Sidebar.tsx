@@ -16,7 +16,7 @@ export default function SideBar({
   }
   return (
     <>
-      <div className="fixed inset-0 z-15 left-5 top-20 backdrop-blur-lg rounded-xl h-1/2 w-1/4 md:w-1/6 flex flex-col text-white">
+      <div className="fixed inset-0 z-30 left-5 top-20 backdrop-blur-lg rounded-xl h-1/2 w-1/4 md:w-1/6 flex flex-col text-white">
         <div className="flex justify-end p-4">
           <X className="size-6" onClick={() => handleButtonClick(false)} />
         </div>

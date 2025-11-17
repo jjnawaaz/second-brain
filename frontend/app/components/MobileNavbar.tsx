@@ -40,12 +40,12 @@ export default function MobileNavBar() {
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: -100, opacity: 0 }}
               transition={{ duration: 0.4, ease: "easeOut" }}
-              className="fixed shadow-2xl backdrop-blur-xl rounded-b-3xl h-auto w-1/2 right-0 top-16 z-10"
+              className="fixed shadow-2xl backdrop-blur-xl rounded-b-3xl h-auto w-1/2 right-0 top-16 z-30"
             >
               <div className="flex flex-col items-center justify-center py-6">
                 {!isAuthenticated && (
                   <div>
-                    <div className="py-5 flex-center justify-center gap-2 font-semibold w-44 z-10">
+                    <div className="py-5 flex-center justify-center gap-2 font-semibold w-44 z-50">
                       <Link
                         href={"/login"}
                         className="flex-center gap-2 cursor-pointer"
@@ -55,7 +55,7 @@ export default function MobileNavBar() {
                         <LogIn className="md:size-4 lg:size-5" />
                       </Link>
                     </div>
-                    <div className="py-5 flex-center justify-center gap-2 font-semibold  w-44 z-10">
+                    <div className="py-5 flex-center justify-center gap-2 font-semibold  w-44 z-50">
                       <Link
                         href={"/signup"}
                         className="flex-center gap-2 cursor-pointer"
@@ -69,7 +69,7 @@ export default function MobileNavBar() {
                 )}
                 {isAuthenticated && (
                   <>
-                    <div className="py-5 flex-center justify-center gap-2 font-semibold  w-44 z-10">
+                    <div className="py-5 flex-center justify-center gap-2 font-semibold  w-44 z-50">
                       <Link
                         href={"/dashboard"}
                         className="flex-center gap-2 cursor-pointer"
@@ -81,7 +81,7 @@ export default function MobileNavBar() {
                       </Link>
                     </div>
                     <div
-                      className="py-5 flex-center justify-center gap-2 font-medium text-md w-44 z-10"
+                      className="py-5 flex-center justify-center gap-2 font-medium text-md w-44 z-50"
                       onClick={handleLogout}
                     >
                       {username}
