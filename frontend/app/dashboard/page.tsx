@@ -199,7 +199,7 @@ export default function Dashboard() {
                     <div className="font-semibold">Go to link: </div>
                     <a
                       href={item.link}
-                      className="cursor-pointer text-blue-400 z-20"
+                      className="cursor-pointer text-blue-400 z-30"
                     >
                       {item.link}
                     </a>
