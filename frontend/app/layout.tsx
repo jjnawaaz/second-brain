@@ -16,7 +16,7 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={`antialiased brainy-gradient min-h-screen`}
-        cz-shortcut-listen="true"
+        cz-0shortcut-listen="true"
       >
         <div className="flex flex-col min-h-dscreen">
           <Navbar />

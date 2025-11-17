@@ -54,7 +54,7 @@ export default function Login() {
   }
   return (
     <>
-      <div className="brainy-gradient h-[calc(100vh-64px)] w-full relative z-0">
+      <div className="brainy-gradient h-[calc(100vh-64px)] w-full relative z-10">
         {/* Change Height here  */}
         <div className="flex-justify-center h-full sm:flex sm:justify-between text-white w-full p-3">
           {/* Left slider for pc  */}

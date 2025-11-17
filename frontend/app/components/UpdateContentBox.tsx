@@ -104,13 +104,13 @@ export default function UpdateContentBox({
   }
   return (
     <>
-      <div className="fixed inset-0 top-16 h-screen w-full  backdrop-blur-sm z-[10000]">
+      <div className="fixed inset-0 top-16 h-screen w-full  backdrop-blur-sm z-15">
         <div className="flex items-center justify-center h-full w-full ">
           {" "}
           {/* Center container */}
           <div className="flex items-center justify-center min-h-screen p-4 overflow-hidden">
             <div className="flex flex-col gap-2 rounded-xl  h-auto max-h-[70vh] w-full mx-auto brainy-gradient text-white overflow-y-auto">
-              <div className="flex justify-end w-full p-3 sticky top-0 bg-gradient-to-r from-black to-main-color z-10">
+              <div className="flex justify-end w-full p-3 sticky top-0 bg-gradient-to-r from-black to-main-color z-15">
                 <X onClick={() => setOpenUpdateContent(false)} />
               </div>
               <div className="flex justify-center w-full text-lg font-bold pb-4">

@@ -99,7 +99,7 @@ export default function Dashboard() {
       <div className=" flex-1 relative min-h-[calc(100vh-64px)] overflow-auto">
         {/* side bar open icon  */}
         {!sidebarOpen && (
-          <div className="fixed inset-0 left-1 top-16 z-10">
+          <div className="fixed inset-0 left-1 top-16 z-15">
             <SquareMenu
               className="size-8 stroke-white bg-transparent"
               onClick={() => handleClick(true)}
@@ -115,7 +115,7 @@ export default function Dashboard() {
         )}
 
         {/* Add Content Plus Button  */}
-        <div className="fixed bottom-5 right-5 backdrop-blur-sm rounded-full brainy-gradient shadow-md shadow-black z-20 ">
+        <div className="fixed bottom-5 right-5 backdrop-blur-sm rounded-full brainy-gradient shadow-md shadow-black z-15 ">
           <PlusIcon
             className="size-10 text-gray-300"
             onClick={() => setOpenContent(true)}
@@ -160,17 +160,17 @@ export default function Dashboard() {
                   <Pen
                     size={14}
                     onClick={() => handleUpdateClick(item)}
-                    className="stroke-white cursor-pointer hover:text-gray-300 z-10"
+                    className="stroke-white cursor-pointer hover:text-gray-300 z-15"
                   />
                   <Trash
                     size={14}
                     onClick={() => handleDeleteClick(item.id)}
-                    className="stroke-white cursor-pointer hover:text-gray-300 z-10"
+                    className="stroke-white cursor-pointer hover:text-gray-300 z-15"
                   />
                 </div>
               </div>
               <p className="text-justify">{item.description}</p>
-              <div className="w-full overflow-hidden break-all text-sm break-words whitespace-normal cursor-pointer z-20">
+              <div className="w-full overflow-hidden break-all text-sm break-words whitespace-normal cursor-pointer z-15">
                 <div className="font-semibold">Go to link: </div>
                 <a href={item.link} className="cursor-pointer text-blue-400">
                   {item.link}

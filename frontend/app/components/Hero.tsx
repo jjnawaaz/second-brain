@@ -7,7 +7,7 @@ export default function Hero() {
   return (
     <>
       <section className="text-white w-full h-auto ">
-        <div className="text-white w-full h-auto relative z-0 xl:flex-center xl:justify-between">
+        <div className="text-white w-full h-auto relative z-5 xl:flex-center xl:justify-between">
           <div className="flex-justify-center p-16">
             <motion.svg
               xmlns="http://www.w3.org/2000/svg"
