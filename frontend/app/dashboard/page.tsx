@@ -160,12 +160,12 @@ export default function Dashboard() {
                   <Pen
                     size={14}
                     onClick={() => handleUpdateClick(item)}
-                    className="stroke-white cursor-pointer hover:text-gray-300 z-17"
+                    className="stroke-white cursor-pointer hover:text-gray-300 z-20"
                   />
                   <Trash
                     size={14}
                     onClick={() => handleDeleteClick(item.id)}
-                    className="stroke-white cursor-pointer hover:text-gray-300 z-17"
+                    className="stroke-white cursor-pointer hover:text-gray-300 z-20"
                   />
                 </div>
               </div>
