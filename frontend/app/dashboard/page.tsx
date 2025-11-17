@@ -115,7 +115,7 @@ export default function Dashboard() {
       <div className=" flex-1 relative min-h-[calc(100vh-64px)] overflow-auto">
         {/* side bar open icon  */}
         {!sidebarOpen && (
-          <div className="fixed inset-0 left-1 top-16 z-25">
+          <div className="fixed left-1 top-16 z-25">
             <SquareMenu
               className="size-8 stroke-white bg-transparent"
               onClick={() => handleClick(true)}
@@ -199,7 +199,7 @@ export default function Dashboard() {
                     <div className="font-semibold">Go to link: </div>
                     <a
                       href={item.link}
-                      className="cursor-pointer text-blue-400 z-40"
+                      className="cursor-pointer text-blue-400"
                     >
                       {item.link}
                     </a>
