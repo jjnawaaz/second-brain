@@ -19,7 +19,7 @@ export default function Navbar() {
   }
   return (
     <>
-      <div className="top-0 sticky shadow-2xl bg-gradient-to-r from-black to-main-color flex-center justify-between px-3 h-16 text-white z-30">
+      <div className="top-0 sticky shadow-2xl bg-gradient-to-r from-black to-main-color flex-center justify-between px-3 h-16 text-white z-50">
         {/* Logo and Text  */}
         <div className="flex-center gap-2">
           <Link
