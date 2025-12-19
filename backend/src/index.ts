@@ -28,6 +28,7 @@ app.use(
     origin: [
       process.env.FRONTEND_URL as string,
       process.env.FRONTEND_URL1 as string,
+      process.env.FRONTEND_DEVELOPMENT_URL as string,
     ],
     credentials: true,
   }),

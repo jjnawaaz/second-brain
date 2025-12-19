@@ -54,7 +54,7 @@ export default function Login() {
   }
   return (
     <>
-      <div className="brainy-gradient h-[calc(100vh-64px)] w-full relative z-10">
+      <div className="brainy-gradient h-[calc(100vh-64px)] w-full relative">
         {/* Change Height here  */}
         <div className="flex-justify-center h-full sm:flex sm:justify-between text-white w-full p-3">
           {/* Left slider for pc  */}
@@ -88,7 +88,7 @@ export default function Login() {
                   Password:
                   <div className="relative mt-3">
                     <input
-                      type={passwordVisible ? "text" : "password"} // Changed from "text" to "password"
+                      type={passwordVisible ? "text" : "password"}
                       placeholder="12345"
                       className="w-full rounded-sm outline-none bg-transparent border-2 border-main-color focus:outline-gray-400 pr-8"
                       onChange={(e) => handleChange(e, updatePassword)}
@@ -106,7 +106,7 @@ export default function Login() {
                 </div>
                 <div className="flex-justify-center border-2 border-white mt-2 p-1 rounded-full cursor-pointer">
                   <button
-                    className="text-sm font-semibold z-20"
+                    className="text-sm font-semibold w-full z-10"
                     onClick={handleClick}
                   >
                     Login

@@ -57,7 +57,7 @@ export default function Login() {
   }
   return (
     <>
-      <div className="brainy-gradient h-[calc(100vh-64px)] w-full relative z-10">
+      <div className="brainy-gradient h-[calc(100vh-64px)] w-full relative">
         {/* Change Height here  */}
         <div className="flex-justify-center sm:flex sm:justify-between h-full text-white w-full p-3">
           {/* Left slider for pc  */}
@@ -120,7 +120,7 @@ export default function Login() {
                 </div>
                 <div className="flex-justify-center border-2 border-white mt-2 p-1 rounded-full cursor-pointer">
                   <button
-                    className="text-sm font-semibold z-020"
+                    className="text-sm font-semibold z-10 w-full"
                     onClick={handleClick}
                   >
                     SignUp
