@@ -103,7 +103,16 @@ export const useAuthStore = create<AuthState>()(
             variables: { data },
           });
 
-          const result = response.data.data.signinUser;
+          const result = response?.data?.data?.signinUser;
+
+          if (!result) {
+            set({
+              isAuthenticated: false,
+              authError: "Login failed",
+              isLoading: false,
+            });
+            return { success: false, message: "Login failed" };
+          }
 
           if (result.success === false) {
             set({
@@ -118,6 +127,7 @@ export const useAuthStore = create<AuthState>()(
           return { success: result.success, message: result.message };
         } catch (e) {
           console.error(e);
+          set({ isLoading: false });
         }
       },
 
@@ -133,9 +143,9 @@ export const useAuthStore = create<AuthState>()(
             }`,
         });
 
-        const result = response.data.data.logoutUser;
+        const result = response?.data?.data?.logoutUser;
         set({ isAuthenticated: false, isLoading: false });
-        return { success: result.success, message: result.message };
+        return { success: result?.success, message: result?.message };
       },
 
       signup: async (data) => {
@@ -152,7 +162,12 @@ export const useAuthStore = create<AuthState>()(
             variables: { data },
           });
 
-          const result = response.data.data.signupUser;
+          const result = response?.data?.data?.signupUser;
+
+          if (!result) {
+            set({ isLoading: false, authError: "Signup failed" });
+            return { success: false, message: "Signup failed" };
+          }
 
           if (result.success === false) {
             set({ isLoading: false, authError: result.message });
@@ -163,6 +178,7 @@ export const useAuthStore = create<AuthState>()(
           return { success: result.success, message: result.message };
         } catch (e) {
           console.error(e);
+          set({ isLoading: false });
         }
       },
 
@@ -180,16 +196,16 @@ export const useAuthStore = create<AuthState>()(
             }`,
         });
 
-        const result = response.data.data.getUser;
+        const result = response?.data?.data?.getUser;
 
-        if (result.success) {
+        if (result?.success) {
           set({ username: result.user.name });
         }
 
         return {
-          success: result.success,
-          message: result.message,
-          name: result.user?.name,
+          success: result?.success,
+          message: result?.message,
+          name: result?.user?.name,
         };
       },
     }),
