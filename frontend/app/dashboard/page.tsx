@@ -64,8 +64,6 @@ export default function Dashboard() {
       ? data
       : data.filter((item) => item.type === filterType);
 
-  console.log(filteredData);
-
   async function refreshData() {
     const response = await getContent();
     if (response?.success) {
@@ -220,7 +218,7 @@ export default function Dashboard() {
           </>
         ) : (
           <>
-            <div className="flex items-center justify-center min-h-[calc(100vh-64px)] border-2 border-white">
+            <div className="flex items-center justify-center min-h-[calc(100vh-64px)]">
               <div className="w-10 h-10 border-4 border-gray-600 border-t-black rounded-full animate-spin"></div>
             </div>
           </>
