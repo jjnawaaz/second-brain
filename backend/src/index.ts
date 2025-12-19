@@ -8,7 +8,7 @@ import { resolvers, typeDefs } from "./graphql/index.js";
 import { authMiddleware } from "./utils/authMiddleware.js";
 
 const app = express();
-
+app.set("trust proxy", 1);
 const server = new ApolloServer({
   typeDefs: typeDefs,
   resolvers: resolvers,
@@ -32,8 +32,8 @@ app.use(
     ],
     credentials: true,
   }),
-  express.json(),
   cookieParser(),
+  express.json(),
   expressMiddleware(server, {
     context: async ({ req, res }: { req: Request; res: Response }) => {
       const payload = authMiddleware(req);

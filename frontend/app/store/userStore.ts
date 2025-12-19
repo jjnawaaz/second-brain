@@ -102,7 +102,7 @@ export const useAuthStore = create<AuthState>()(
             }`,
             variables: { data },
           });
-
+          console.log(response);
           const result = response?.data?.data?.signinUser;
 
           if (!result) {
